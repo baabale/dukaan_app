@@ -73,26 +73,54 @@ class CartItem extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Row(
-                      children: <Widget>[
-                        CustomButton(),
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Text(
-                            '01',
-                            style: TextStyle(
-                              color: Theme.of(context).accentColor,
-                              letterSpacing: 1.2,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w900,
+                    CustomButton(
+                      icon: Icon(FontAwesomeIcons.trashAlt),
+                      onPressed: () => showDialog(
+                        context: context,
+                        // barrierDismissible: false,
+                        builder: (_) => AlertDialog(
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {},
+                              child: Text('Yes'),
                             ),
+                            TextButton(
+                              onPressed: () {},
+                              child: Text('No'),
+                            ),
+                          ],
+                          title: Text('Confirm'),
+                          content: Text(
+                            'Are you sure to remove this item from your cart?',
                           ),
                         ),
-                        CustomButton(),
-                      ],
-                    )
+                      ),
+                    ),
                   ],
                 ),
+                Row(
+                  children: <Widget>[
+                    CustomButton(
+                      icon: Icon(Icons.remove),
+                      onPressed: () {},
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text(
+                        '01',
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          letterSpacing: 1.2,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ),
+                    CustomButton(
+                      icon: Icon(Icons.add),
+                    ),
+                  ],
+                )
               ],
             ),
           )),
@@ -103,7 +131,11 @@ class CartItem extends StatelessWidget {
 }
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({Key? key}) : super(key: key);
+  const CustomButton({Key? key, this.onPressed, required this.icon})
+      : super(key: key);
+
+  final Icon icon;
+  final void Function()? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -111,28 +143,7 @@ class CustomButton extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         borderRadius: BorderRadius.circular(50),
-        onTap: () {
-          showDialog(
-            context: context,
-            // barrierDismissible: false,
-            builder: (_) => AlertDialog(
-              actions: <Widget>[
-                TextButton(
-                  onPressed: () {},
-                  child: Text('Yes'),
-                ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text('No'),
-                ),
-              ],
-              title: Text('Confirm'),
-              content: Text(
-                'Are you sure to remove this item from your cart?',
-              ),
-            ),
-          );
-        },
+        onTap: onPressed,
         child: Container(
           width: 35.0,
           height: 35.0,
@@ -140,7 +151,7 @@ class CustomButton extends StatelessWidget {
             color: Theme.of(context).accentColor.withOpacity(0.05),
             borderRadius: BorderRadius.circular(50.0),
           ),
-          child: Icon(FontAwesomeIcons.trashAlt),
+          child: icon,
         ),
       ),
     );
