@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_app/providers/products.dart';
 import 'package:flutter_ecommerce_app/screens/screens.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(DukaanApp());
+void main() => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: ProductsProvider()),
+      ],
+      child: DukaanApp(),
+    ));
 
 class DukaanApp extends StatelessWidget {
   @override

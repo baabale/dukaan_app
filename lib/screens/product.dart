@@ -115,18 +115,18 @@ class _ProductScreenState extends State<ProductScreen> {
                         ],
                       ),
                       const SizedBox(height: 10),
-                      SizedBox(
-                        height: 200,
-                        width: double.infinity,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: 5,
-                          itemBuilder: (context, index) => Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: ProductCard(),
-                          ),
-                        ),
-                      ),
+                      // SizedBox(
+                      //   height: 200,
+                      //   width: double.infinity,
+                      //   child: ListView.builder(
+                      //     scrollDirection: Axis.horizontal,
+                      //     itemCount: 5,
+                      //     itemBuilder: (context, index) => Padding(
+                      //       padding: const EdgeInsets.only(right: 4),
+                      //       child: ProductCard(),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(height: 16),
                     ],
                   ),
