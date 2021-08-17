@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_app/providers/products.dart';
 import 'package:flutter_ecommerce_app/widgets/home_carousel.dart';
 import 'package:flutter_ecommerce_app/widgets/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 class ProductListScreen extends StatefulWidget {
   const ProductListScreen({Key? key}) : super(key: key);
@@ -30,12 +32,14 @@ class _ProductListScreenState extends State<ProductListScreen> {
           ),
         ],
       ),
-      body: ListView.builder(
-        padding: EdgeInsets.all(10),
-        itemCount: 5,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.only(bottom: 6),
-          child: ProductListTile(),
+      body: Consumer<ProductsProvider>(
+        builder: (context, value, _) => ListView.builder(
+          padding: EdgeInsets.all(10),
+          itemCount: value.products.length,
+          itemBuilder: (context, index) => Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: ProductListTile(product: value.products[index]),
+          ),
         ),
       ),
     );

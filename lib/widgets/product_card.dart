@@ -20,7 +20,12 @@ class ProductCard extends StatelessWidget {
         color: Color(0xfff5f9ff),
         borderRadius: BorderRadius.circular(10),
         child: InkWell(
-          onTap: () => Navigator.pushNamed(context, ProductScreen.id),
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductScreen(product: product),
+            ),
+          ),
           borderRadius: BorderRadius.circular(10),
           child: Container(
             width: 150,

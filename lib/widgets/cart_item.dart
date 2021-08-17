@@ -1,8 +1,14 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_app/models/models.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class CartItem extends StatelessWidget {
+  final ProductModel product;
+
+  CartItem({required this.product});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -20,7 +26,7 @@ class CartItem extends StatelessWidget {
           Container(
             width: 120,
             height: double.infinity,
-            child: FlutterLogo(),
+            child: CachedNetworkImage(imageUrl: product.image),
           ),
           Expanded(
               child: Padding(
@@ -42,7 +48,7 @@ class CartItem extends StatelessWidget {
                           Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: Text(
-                              'Product Name',
+                              product.name,
                               style: GoogleFonts.roboto(fontSize: 18),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -59,7 +65,7 @@ class CartItem extends StatelessWidget {
                               ),
                               children: [
                                 TextSpan(
-                                  text: '120',
+                                  text: product.price.toString(),
                                   style: TextStyle(
                                     color: Theme.of(context).accentColor,
                                     letterSpacing: 1.2,
@@ -107,7 +113,7 @@ class CartItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Text(
-                        '01',
+                        product.quantity.toString(),
                         style: TextStyle(
                           color: Theme.of(context).accentColor,
                           letterSpacing: 1.2,

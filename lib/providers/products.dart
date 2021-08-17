@@ -10,8 +10,11 @@ class ProductsProvider extends ChangeNotifier {
   List<ProductModel> products = [];
   List<CategoryModel> categories = [];
 
-  Future<List<ProductModel>> getProducts() async {
-    List<ProductModel> productList = [];
+  bool productsLoading = true, categoriesLoading = true;
+
+  Future<void> getProducts() async {
+    productsLoading = true;
+    notifyListeners();
     try {
       http.Response response = await http.post(
         Uri.parse(kEndPoint),
@@ -22,7 +25,7 @@ class ProductsProvider extends ChangeNotifier {
 
       if (response.statusCode == 200) {
         final List data = jsonDecode(response.body);
-        productList = data.map((e) => ProductModel.fromJson(e)).toList();
+        products = data.map((e) => ProductModel.fromJson(e)).toList();
       } else {
         print(response.body);
       }
@@ -31,11 +34,13 @@ class ProductsProvider extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
-    return productList;
+    productsLoading = false;
+    notifyListeners();
   }
 
-  Future<List<CategoryModel>> getCategories() async {
-    List<CategoryModel> categoryList = [];
+  Future<void> getCategories() async {
+    categoriesLoading = true;
+    notifyListeners();
     try {
       http.Response response = await http.post(
         Uri.parse(kEndPoint),
@@ -45,9 +50,8 @@ class ProductsProvider extends ChangeNotifier {
       );
 
       if (response.statusCode == 200) {
-        final List categories = jsonDecode(response.body);
-        categoryList =
-            categories.map((e) => CategoryModel.fromJson(e)).toList();
+        final List data = jsonDecode(response.body);
+        categories = data.map((e) => CategoryModel.fromJson(e)).toList();
       } else {
         print(response.body);
       }
@@ -56,6 +60,7 @@ class ProductsProvider extends ChangeNotifier {
     } catch (e) {
       print(e.toString());
     }
-    return categoryList;
+    categoriesLoading = false;
+    notifyListeners();
   }
 }

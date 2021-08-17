@@ -1,10 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ecommerce_app/models/models.dart';
+import 'package:flutter_ecommerce_app/screens/product.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProductListTile extends StatelessWidget {
   const ProductListTile({
     Key? key,
+    required this.product,
   }) : super(key: key);
+
+  final ProductModel product;
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +18,11 @@ class ProductListTile extends StatelessWidget {
       color: Color(0xfff5f9ff),
       borderRadius: BorderRadius.circular(10),
       child: InkWell(
-        onTap: () {},
+        onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductScreen(product: product),
+            )),
         borderRadius: BorderRadius.circular(10),
         child: Container(
           height: 150,
@@ -32,7 +42,13 @@ class ProductListTile extends StatelessWidget {
                       topLeft: Radius.circular(10),
                     ),
                   ),
-                  child: FlutterLogo(),
+                  child: Hero(
+                    tag: product.id,
+                    child: CachedNetworkImage(
+                      imageUrl: product.image,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
                 ),
               ),
               const SizedBox(width: 10),
@@ -43,15 +59,16 @@ class ProductListTile extends StatelessWidget {
                   children: [
                     const SizedBox(height: 10),
                     Text(
-                      'Products Name',
+                      product.name,
                       style: GoogleFonts.poppins(
                         fontSize: 20,
                       ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 10),
                     Expanded(
                       child: Text(
-                        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis semper fermentum ipsum non feugiat. Suspendisse potenti. Donec tristique rutrum nisi, non accumsan dui. Mauris vel dui non lorem mollis viverra sed pretium metus. Integer ac elit nunc. Sed ultrices, nunc posuere malesuada eleifend, purus eros maximus ligula, at interdum urna elit sit amet massa. Vivamus nisl diam, imperdiet et mollis ullamcorper, interdum id libero.',
+                        product.description,
                         style: GoogleFonts.poppins(fontSize: 12),
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
@@ -64,7 +81,7 @@ class ProductListTile extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '\$120',
+                            '\$${product.price}',
                             style: GoogleFonts.poppins(fontSize: 20),
                             textAlign: TextAlign.end,
                           ),

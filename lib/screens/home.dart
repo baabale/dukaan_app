@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:after_layout/after_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ecommerce_app/models/models.dart';
 import 'package:flutter_ecommerce_app/providers/products.dart';
@@ -19,7 +20,8 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreenState extends State<HomeScreen>
+    with AfterLayoutMixin<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,33 +90,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 96,
                     width: double.infinity,
-                    child: FutureBuilder<List<CategoryModel>>(
-                      future: value.getCategories(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                          default:
-                            if (snapshot.data != null) {
-                              final data = snapshot.data!;
-                              return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                                itemCount: data.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  child: CategoryCard(
-                                    category: data[index],
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Center(child: Text('No Data Found.'));
-                            }
-                        }
-                      },
-                    ),
+                    child: value.categoriesLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            itemCount: value.categories.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              child: CategoryCard(
+                                category: value.categories[index],
+                              ),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -155,33 +144,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   SizedBox(
                     height: 210,
                     width: double.infinity,
-                    child: FutureBuilder<List<ProductModel>>(
-                      future: value.getProducts(),
-                      builder: (context, snapshot) {
-                        switch (snapshot.connectionState) {
-                          case ConnectionState.waiting:
-                            return Center(child: CircularProgressIndicator());
-                          default:
-                            if (snapshot.data != null) {
-                              final data = snapshot.data!;
-                              return ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                padding: EdgeInsets.symmetric(horizontal: 4),
-                                itemCount: data.length,
-                                itemBuilder: (context, index) => Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(horizontal: 6),
-                                  child: ProductCard(
-                                    product: data[index],
-                                  ),
-                                ),
-                              );
-                            } else {
-                              return Center(child: Text('No Data Found.'));
-                            }
-                        }
-                      },
-                    ),
+                    child: value.productsLoading
+                        ? Center(child: CircularProgressIndicator())
+                        : ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            padding: EdgeInsets.symmetric(horizontal: 4),
+                            itemCount: value.products.length,
+                            itemBuilder: (context, index) => Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 6),
+                              child: ProductCard(
+                                product: value.products[index],
+                              ),
+                            ),
+                          ),
                   ),
                   const SizedBox(height: 16),
                 ],
@@ -237,5 +213,11 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+  }
+
+  @override
+  void afterFirstLayout(BuildContext context) {
+    Provider.of<ProductsProvider>(context, listen: false).getProducts();
+    Provider.of<ProductsProvider>(context, listen: false).getCategories();
   }
 }

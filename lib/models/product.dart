@@ -2,6 +2,7 @@ class ProductModel {
   late String id, name, description, image, category;
   late double price;
   late DateTime createdDate;
+  late int quantity;
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
@@ -11,5 +12,6 @@ class ProductModel {
     image = json['image'];
     category = json['category'];
     createdDate = DateTime.parse(json['created_date']);
+    quantity = 1;
   }
 }
